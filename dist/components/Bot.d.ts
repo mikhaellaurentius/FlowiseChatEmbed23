@@ -36,7 +36,6 @@ export type BotProps = {
     apiHost?: string;
     chatflowConfig?: Record<string, unknown>;
     welcomeMessage?: string;
-    errorMessage?: string;
     botMessage?: BotMessageTheme;
     userMessage?: UserMessageTheme;
     textInput?: TextInputTheme;
@@ -50,6 +49,7 @@ export type BotProps = {
     fontSize?: number;
     isFullPage?: boolean;
     observersConfig?: observersConfigType;
+    toggleExpansion?: () => void;
 };
 export declare const Bot: (botProps: BotProps & {
     class?: string;
