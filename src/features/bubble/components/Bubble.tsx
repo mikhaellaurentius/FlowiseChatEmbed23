@@ -47,7 +47,7 @@ export const Bubble = (props: BubbleProps) => {
           // height: bubbleProps.theme?.chatWindow?.height ? `${bubbleProps.theme?.chatWindow?.height.toString()}px` : 'calc(100% - 100px)',
           // width: bubbleProps.theme?.chatWindow?.width ? `${bubbleProps.theme?.chatWindow?.width.toString()}px` : undefined,
           height: isExpanded() ? 'calc(100% - 100px)' : 'calc(100% - 100px)', // Adjust height values as needed
-          width: isExpanded() ? 'calc(100% - 50px)' : 'calc(100% - 400px)', // Adjust width values as needed
+          width: isExpanded() ? 'calc(100% - 50px)' : undefined, // Adjust width values as needed
           transition: 'transform 200ms cubic-bezier(0, 1.2, 1, 1), opacity 150ms ease-out',
           'transform-origin': 'bottom right',
           transform: isBotOpened() ? 'scale3d(1, 1, 1)' : 'scale3d(0, 0, 1)',
