@@ -1,6 +1,6 @@
 import { Show } from 'solid-js';
 import { JSX } from 'solid-js/jsx-runtime';
-import { DeleteIcon, SendIcon } from '../icons';
+import { DeleteIcon, SendIcon, ExpansionIcon } from '../icons';
 
 type SendButtonProps = {
   sendButtonColor?: string;
@@ -43,6 +43,23 @@ export const DeleteButton = (props: SendButtonProps) => {
       <Show when={!props.isLoading} fallback={<Spinner class="text-white" />}>
         <DeleteIcon color={props.sendButtonColor} class={'send-icon flex ' + (props.disableIcon ? 'hidden' : '')} />
       </Show>
+    </button>
+  );
+};
+export const ExpansionButton = (props: SendButtonProps) => {
+  return (
+    <button
+      type="button"
+      {...props}
+      class={
+        'py-2 px-4 justify-center font-semibold text-white focus:outline-none flex items-center transition-all filter hover:brightness-90 active:brightness-75 chatbot-button ' +
+        (props.class || '')
+      }
+      style={{ background: 'transparent', border: 'none' }}
+      //onClick={props.onClick} // Call the onClick function provided via props
+      title="Expand"
+    >
+      <ExpansionIcon color={props.sendButtonColor} class={'send-icon flex ' + (props.disableIcon ? 'hidden' : '')} />
     </button>
   );
 };
