@@ -8,7 +8,7 @@ import { LoadingBubble } from './bubbles/LoadingBubble';
 import { SourceBubble } from './bubbles/SourceBubble';
 import { StarterPromptBubble } from './bubbles/StarterPromptBubble';
 import { BotMessageTheme, TextInputTheme, UserMessageTheme } from '@/features/bubble/types';
-import { Badge } from './Badge';
+//import { Badge } from './Badge';
 import socketIOClient from 'socket.io-client';
 import { Popup } from '@/features/popup';
 import { Avatar } from '@/components/avatars/Avatar';
