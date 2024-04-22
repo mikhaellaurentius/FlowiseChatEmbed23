@@ -12,7 +12,7 @@ import { Badge } from './Badge';
 import socketIOClient from 'socket.io-client';
 import { Popup } from '@/features/popup';
 import { Avatar } from '@/components/avatars/Avatar';
-import { DeleteButton, SendButton } from '@/components/buttons/SendButton';
+import { DeleteButton, SendButton, ExpansionButton } from '@/components/buttons/SendButton';
 import { CircleDotIcon, TrashIcon } from './icons';
 import { CancelButton } from './buttons/CancelButton';
 import { cancelAudioRecording, startAudioRecording, stopAudioRecording } from '@/utils/audioRecording';
@@ -63,7 +63,6 @@ export type BotProps = {
   apiHost?: string;
   chatflowConfig?: Record<string, unknown>;
   welcomeMessage?: string;
-  errorMessage?: string;
   botMessage?: BotMessageTheme;
   userMessage?: UserMessageTheme;
   textInput?: TextInputTheme;
@@ -77,6 +76,7 @@ export type BotProps = {
   fontSize?: number;
   isFullPage?: boolean;
   observersConfig?: observersConfigType;
+  toggleExpansion?: () => void;
 };
 
 const defaultWelcomeMessage = 'Hi there! How can I help?';
@@ -275,7 +275,7 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
   // Handle errors
   const handleError = (message = 'Oops! There seems to be an error. Please try again.') => {
     setMessages((prevMessages) => {
-      const messages: MessageType[] = [...prevMessages, { message: props.errorMessage || message, type: 'apiMessage' }];
+      const messages: MessageType[] = [...prevMessages, { message, type: 'apiMessage' }];
       addChatMessage(messages);
       return messages;
     });
@@ -396,11 +396,9 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
     if (result.error) {
       const error = result.error;
       console.error(error);
-      if (typeof error === 'object') {
-        handleError(`Error: ${error?.message.replaceAll('Error:', ' ')}`);
-        return;
-      }
-      handleError();
+      const err: any = error;
+      const errorData = typeof err === 'string' ? err : err.response.data || `${err.response.status}: ${err.response.statusText}`;
+      handleError(errorData);
       return;
     }
   };
@@ -473,7 +471,7 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
         Object.getOwnPropertyNames(chatbotConfig.starterPrompts).forEach((key) => {
           prompts.push(chatbotConfig.starterPrompts[key].prompt);
         });
-        setStarterPrompts(prompts.filter((prompt) => prompt !== ''));
+        setStarterPrompts(prompts);
       }
       if (chatbotConfig.chatFeedback) {
         const chatFeedbackStatus = chatbotConfig.chatFeedback.status;
@@ -539,14 +537,7 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
   };
 
   const addRecordingToPreviews = (blob: Blob) => {
-    let mimeType = '';
-    const pos = blob.type.indexOf(';');
-    if (pos === -1) {
-      mimeType = blob.type;
-    } else {
-      mimeType = blob.type.substring(0, pos);
-    }
-
+    const mimeType = blob.type.substring(0, blob.type.indexOf(';'));
     // read blob and add to previews
     const reader = new FileReader();
     reader.readAsDataURL(blob);
@@ -792,6 +783,9 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
               'border-top-right-radius': props.isFullPage ? '0px' : '6px',
             }}
           >
+            <ExpansionButton sendButtonColor={props.bubbleTextColor} type="button" class="my-2" onClick={props.toggleExpansion}>
+              <span style={{ 'font-family': 'Poppins, sans-serif' }}>Expand</span>
+            </ExpansionButton>
             <Show when={props.titleAvatarSrc}>
               <>
                 <div style={{ width: '15px' }} />
