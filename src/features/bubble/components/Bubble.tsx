@@ -14,6 +14,7 @@ export const Bubble = (props: BubbleProps) => {
 
   const [isBotOpened, setIsBotOpened] = createSignal(false);
   const [isBotStarted, setIsBotStarted] = createSignal(false);
+  const [isExpanded, setIsExpanded] = createSignal(false);
 
   const openBot = () => {
     if (!isBotStarted()) setIsBotStarted(true);
@@ -28,6 +29,10 @@ export const Bubble = (props: BubbleProps) => {
     isBotOpened() ? closeBot() : openBot();
   };
 
+  const toggleExpansion = () => {
+    isExpanded() ? setIsExpanded(false) : setIsExpanded(true);
+  };
+
   onCleanup(() => {
     setIsBotStarted(false);
   });
@@ -39,8 +44,10 @@ export const Bubble = (props: BubbleProps) => {
       <div
         part="bot"
         style={{
-          height: bubbleProps.theme?.chatWindow?.height ? `${bubbleProps.theme?.chatWindow?.height.toString()}px` : 'calc(100% - 100px)',
-          width: bubbleProps.theme?.chatWindow?.width ? `${bubbleProps.theme?.chatWindow?.width.toString()}px` : undefined,
+          // height: bubbleProps.theme?.chatWindow?.height ? `${bubbleProps.theme?.chatWindow?.height.toString()}px` : 'calc(100% - 100px)',
+          // width: bubbleProps.theme?.chatWindow?.width ? `${bubbleProps.theme?.chatWindow?.width.toString()}px` : undefined,
+          height: isExpanded() ? 'calc(100% - 100px)' : 'calc(100% - 100px)', // Adjust height values as needed
+          width: isExpanded() ? 'calc(100% - 50px)' : 'calc(100% - 400px)', // Adjust width values as needed
           transition: 'transform 200ms cubic-bezier(0, 1.2, 1, 1), opacity 150ms ease-out',
           'transform-origin': 'bottom right',
           transform: isBotOpened() ? 'scale3d(1, 1, 1)' : 'scale3d(0, 0, 1)',
@@ -63,7 +70,6 @@ export const Bubble = (props: BubbleProps) => {
             title={bubbleProps.theme?.chatWindow?.title}
             titleAvatarSrc={bubbleProps.theme?.chatWindow?.titleAvatarSrc}
             welcomeMessage={bubbleProps.theme?.chatWindow?.welcomeMessage}
-            errorMessage={bubbleProps.theme?.chatWindow?.errorMessage}
             poweredByTextColor={bubbleProps.theme?.chatWindow?.poweredByTextColor}
             textInput={bubbleProps.theme?.chatWindow?.textInput}
             botMessage={bubbleProps.theme?.chatWindow?.botMessage}
@@ -73,6 +79,7 @@ export const Bubble = (props: BubbleProps) => {
             chatflowConfig={props.chatflowConfig}
             apiHost={props.apiHost}
             observersConfig={props.observersConfig}
+            toggleExpansion={toggleExpansion}
           />
         </Show>
       </div>
