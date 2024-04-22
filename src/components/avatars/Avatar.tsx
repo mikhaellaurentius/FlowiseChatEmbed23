@@ -13,9 +13,15 @@ export const Avatar = (props: { initialAvatarSrc?: string }) => {
   return (
     <Show when={isNotEmpty(avatarSrc())} keyed fallback={<DefaultAvatar />}>
       <figure
+        // class={
+        //   'flex justify-center items-center rounded-full text-white relative flex-shrink-0 ' + (isMobile() ? 'w-6 h-6 text-sm' : 'w-10 h-10 text-xl')
+        // }
+
+        // Modification from here
         class={
-          'flex justify-center items-center rounded-full text-white relative flex-shrink-0 ' + (isMobile() ? 'w-6 h-6 text-sm' : 'w-10 h-10 text-xl')
+          'flex justify-center items-center rounded-full text-white relative flex-shrink-0 ' + (isMobile() ? 'w-4 h-4 text-sm' : 'w-6 h-6 text-xl')
         }
+        // Modification to here
       >
         <img src={avatarSrc()} alt="Bot avatar" class="rounded-full object-cover w-full h-full" />
       </figure>
